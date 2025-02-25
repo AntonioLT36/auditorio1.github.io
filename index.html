@@ -89,19 +89,25 @@
 
         // Cargar la selección guardada desde Firestore
         document.addEventListener('DOMContentLoaded', () => {
-            db.collection("seating").doc("seatSelection").get().then((doc) => {
-                if (doc.exists) {
-                    console.log("Datos recuperados de Firestore:", doc.data());
-                    const savedSelection = doc.data();
-                    createSeats(savedSelection);
-                } else {
-                    console.log("No se encontró un documento en Firestore.");
-                    createSeats({});
-                }
-            }).catch((error) => {
-                console.error("Error al recuperar datos de Firestore:", error);
-            });
+        // Asegúrate de inicializar Firebase primero
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+    
+        // Ahora puedes utilizar `db`
+        db.collection("seating").doc("seatSelection").get().then((doc) => {
+            if (doc.exists) {
+                console.log("Datos recuperados de Firestore:", doc.data());
+                const savedSelection = doc.data();
+                createSeats(savedSelection);
+            } else {
+                console.log("No se encontró un documento en Firestore.");
+                createSeats({});
+            }
+        }).catch((error) => {
+            console.error("Error al recuperar datos de Firestore:", error);
         });
+    });
+
     </script>
 </body>
 </html>
